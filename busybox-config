@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
 # Busybox version: 1.36.0.git
-# Mon Apr 11 19:16:10 2022
+# Mon Apr 11 19:18:28 2022
 #
 CONFIG_HAVE_DOT_CONFIG=y
 
@@ -13,9 +13,9 @@ CONFIG_HAVE_DOT_CONFIG=y
 # CONFIG_FEDORA_COMPAT is not set
 # CONFIG_INCLUDE_SUSv2 is not set
 # CONFIG_LONG_OPTS is not set
-# CONFIG_SHOW_USAGE is not set
-# CONFIG_FEATURE_VERBOSE_USAGE is not set
-# CONFIG_FEATURE_COMPRESS_USAGE is not set
+CONFIG_SHOW_USAGE=y
+CONFIG_FEATURE_VERBOSE_USAGE=y
+CONFIG_FEATURE_COMPRESS_USAGE=y
 # CONFIG_LFS is not set
 # CONFIG_PAM is not set
 # CONFIG_FEATURE_DEVPTS is not set
