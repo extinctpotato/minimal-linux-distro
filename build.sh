@@ -20,9 +20,13 @@ if [ $# -eq 0 ]; then
     ln -sf `which ar` $musl_install_dir/bin/musl-ar
     ln -sf `which strip` $musl_install_dir/bin/musl-strip
 
+    cd $linux_path
+    mkdir -p $this_path/build/kernel_headers
+    make headers_install ARCH=x86_64 INSTALL_HDR_PATH=$this_path/build/kernel_headers
+
     cp $this_path/busybox-config $busybox_path/.config
     cd $busybox_path
-    CFLAGS="-I$linux_path/include" make -j`nproc` install
+    CFLAGS="-I$this_path/build/kernel_headers/include" make -j`nproc` install
 
     musl-gcc $this_path/hello_world.c \
         -static -Os \
