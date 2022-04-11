@@ -1,10 +1,24 @@
 #!/bin/sh
 
+set -ex
+
 this_path=`realpath .`
 linux_path=`realpath linux`
 busybox_path=`realpath busybox`
+musl_path=`realpath musl`
+musl_install_dir=$this_path/build/musl
+
+PATH=$PATH:$musl_install_dir/bin
 
 if [ $# -eq 0 ]; then
+    cd $musl_path
+    ./configure --prefix=$musl_install_dir
+    make -j`nproc`
+    make install
+
+    ln -sf `which ar` $musl_install_dir/bin/musl-ar
+    ln -sf `which strip` $musl_install_dir/bin/musl-strip
+
     cp $this_path/busybox-config $busybox_path/.config
     cd $busybox_path
     CFLAGS="-I$linux_path/include" make -j`nproc` install
