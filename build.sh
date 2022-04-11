@@ -7,6 +7,7 @@ linux_path=`realpath linux`
 busybox_path=`realpath busybox`
 musl_path=`realpath musl`
 musl_install_dir=$this_path/build/musl
+git_ver=`git describe --abbrev=8 --dirty --always --tags`
 
 PATH=$PATH:$musl_install_dir/bin
 
@@ -23,6 +24,13 @@ if [ $# -eq 0 ]; then
     cd $busybox_path
     CFLAGS="-I$linux_path/include" make -j`nproc` install
 
+    musl-gcc $this_path/hello_world.c \
+        -static -Os \
+        -o $this_path/build/rootfs_data/bin/hello \
+        -DVERSION="\"$git_ver\""
+
+    chmod +x $this_path/build/rootfs_data/bin/hello
+
     cd $this_path/build/rootfs_data
     rm -rf $this_path/build/rootfs.cpio || true
     find . | cpio -o -H newc -R root:root > ../rootfs.cpio
@@ -31,6 +39,7 @@ if [ $# -eq 0 ]; then
     cd $linux_path
     make -j`nproc`
     cp $linux_path/arch/x86_64/boot/bzImage $this_path/build/bzImage
+
 elif [ "$1" == "run" ]; then
     qemu-system-x86_64 \
         -kernel $this_path/build/bzImage \
