@@ -26,6 +26,7 @@ if [ $# -eq 0 ]; then
 
     cp $this_path/busybox-config $busybox_path/.config
     cd $busybox_path
+    make oldconfig
     CFLAGS="-I$this_path/build/kernel_headers/include" make -j`nproc` install
 
     musl-gcc $this_path/hello_world.c \
